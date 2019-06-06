@@ -1,0 +1,26 @@
+{
+  "name": "timet",
+  "version": "1.0.0",
+  "description": "A wrapper library for custom date functionalities. ",
+  "main": "./TimeT.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oakinyelure/TimeT.git"
+  },
+  "keywords": [
+    "Time",
+    "Date"
+  ],
+  "author": "Olusegun Akinyelure",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oakinyelure/TimeT/issues"
+  },
+  "homepage": "https://github.com/oakinyelure/TimeT#readme",
+  "devDependencies": {
+    "mocha": "^6.1.4"
+  }
+}
