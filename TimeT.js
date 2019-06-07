@@ -27,7 +27,7 @@ function TimeT(date) {
         }
         return new TimeT().setDate(new Date(date));
     }
-    if(this.isValidDate(date)) {
+    if(this.Validators.isValidDate(date)) {
         return new TimeT().setDate(date);
     }
 }
@@ -40,19 +40,10 @@ TimeT.prototype = {
      * @returns void
      */
     setDate: function(date) {
-        if(!this.isValidDate(date)) {
+        if(!this.Validators.isValidDate(date)) {
             throw TypeError("Not a supported date");
         }
         this.date = date;
-    },
-
-    /**
-     * Returns a boolean checking if date is a valid date or not
-     * @param {Date} date 
-     * @returns boolean
-     */
-    isValidDate: function(date) {
-        return (Object.prototype.toString.call(date) === '[object Date]');
     }
 }
 
@@ -63,12 +54,12 @@ TimeT.prototype.Validators = {
      * @param {void} void
      * @returns Array<RegExp>
      */
-    supportedStringDate: function() {
+    getSupportedStringDateFormats: function() {
         return [
             /^\d{4}\-\d{1,2}\-\d{1,2}$/,
             /(\d{4})-(\d{2})-(\d{2})/,
             /^\d{4}[\/.]\d{1,2}[\/.]\d{1,2}$/
-        ]
+        ];
     },
 
     /**
@@ -77,13 +68,23 @@ TimeT.prototype.Validators = {
      * @param {string} date 
      */
     isSupportedDateFormat: function(date) {
-        var allSupportedFormatInRegex = this.supportedStringDate();
+        var allSupportedFormatInRegex = this.getSupportedStringDateFormats();
         for(var i = 0; i <= allSupportedFormatInRegex.length; i++) {
             if(allSupportedFormatInRegex[i].test(date)) {
                 return true;
             }
         }
         return false;
+    },
+
+    
+    /**
+     * Returns a boolean checking if date is a valid date or not
+     * @param {Date} date 
+     * @returns boolean
+     */
+    isValidDate: function(date) {
+        return (Object.prototype.toString.call(date) === '[object Date]');
     }
 }
 
