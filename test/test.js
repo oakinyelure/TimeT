@@ -2,7 +2,7 @@ const assert = require('assert');
 const expect = require("chai").expect;
 const TimeT = require("../TimeT.js");
 
-describe("#Class Instantiation", () => [
+describe("#Class Instantiation", () => {
     it('empty instantiation should create instance of TimeT', () => {
         expect(new TimeT()).to.be.an.instanceof(TimeT);
     }),
@@ -14,7 +14,7 @@ describe("#Class Instantiation", () => [
     it("date instantiation should create instance of TimeT", () => {
         expect(new TimeT(new Date)).to.be.an.instanceOf(TimeT);
     })
-]);
+});
 
 
 describe("#Instantiating with unsupported date argument", () => {
@@ -28,3 +28,5 @@ describe("#Instantiating with unsupported date argument", () => {
         expect(wrongStringInstantiation).to.not.throw();
     })
 });
+
+const Validators = require("./validator-test");
