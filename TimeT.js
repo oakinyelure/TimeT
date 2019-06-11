@@ -30,6 +30,7 @@ function TimeT(date) {
     if(this.Validators.isValidDate(date)) {
         return new TimeT().setDate(date);
     }
+    
 }
 
 TimeT.prototype = {
@@ -87,5 +88,28 @@ TimeT.prototype.Validators = {
         return (Object.prototype.toString.call(date) === '[object Date]');
     }
 }
+
+TimeT.prototype.Helpers = {
+
+    priotize: function(timeArg) {
+
+    },
+
+    customPolyfill: function() {
+
+        /**
+         * Method checks if an object is a function
+         */
+        var isAFunction = function() {
+            Object.prototype.isAFunction = function() {
+               return  (Object.prototype.toString.call(this) === '[object Function]');
+            }
+        }
+
+
+        isAFunction();
+    }
+}
+
 
 module.exports = TimeT;
