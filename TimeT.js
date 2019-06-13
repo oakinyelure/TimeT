@@ -106,7 +106,6 @@ TimeT.prototype.Helpers = {
             };
         }
 
-
         isAFunction();
     }
 }
