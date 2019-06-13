@@ -103,7 +103,7 @@ TimeT.prototype.Helpers = {
         var isAFunction = function() {
             Object.prototype.isAFunction = function() {
                return  (Object.prototype.toString.call(this) === '[object Function]');
-            }
+            };
         }
 
 
