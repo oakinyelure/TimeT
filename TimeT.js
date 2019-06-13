@@ -98,7 +98,7 @@ TimeT.prototype.Helpers = {
     customPolyfill: function() {
 
         /**
-         * Method checks if an object is a function
+         * Method checks if an object is a function. Can be used with any object
          */
         var isAFunction = function() {
             Object.prototype.isAFunction = function() {
