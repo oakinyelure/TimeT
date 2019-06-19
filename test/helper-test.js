@@ -14,7 +14,7 @@ const TimeT = require("../TimeT.js");
             }),
 
             it("should exist after calling polyfill", function() {  
-                timeInstance.Helpers.customPolyfill();
+                timeInstance.Helpers.applyPolyfill();
                 expect(new Object.isAFunction() != null).to.be.true;
             }),
 
@@ -38,6 +38,26 @@ const TimeT = require("../TimeT.js");
                 expect(fn.isAFunction() == (typeof fn == "function")).to.be.true;
             })
         });
+
+        describe("#IsArray prototype", function() {
+            let inst = new String("This is a test string");
+            it("should return false if used on objects that are not arrays", function() {
+                expect(inst.isArray()).to.be.false;
+            }),
+
+            it("should return true if used on array objects", function() {
+                let instArray = inst.split(" ");
+                expect(instArray.isArray()).to.be.true;
+            }),
+
+            it("should return true on legacy array objects", function() {
+                expect(new Array().isArray()).to.be.true;
+            }),
+
+            it("should return true on new array objects", function() {
+                expect([].isArray()).to.be.true;
+            })            
+        })
        
     })
 
