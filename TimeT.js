@@ -91,7 +91,7 @@ TimeT.prototype.Validators = {
 
 TimeT.prototype.Helpers = {
 
-    customPolyfill: function() {
+    applyPolyfill: function() {
 
         /**
          * Method checks if an object is a function. Can be used with any object
