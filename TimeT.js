@@ -97,13 +97,33 @@ TimeT.prototype.Helpers = {
          * Method checks if an object is a function. Can be used with any object
          */
         var isAFunction = function() {
-            Object.prototype.isAFunction = function() {
-               return  (Object.prototype.toString.call(this) === '[object Function]');
-            };
+            if(!Object.isAFunction) {
+                Object.prototype.isAFunction = function() {
+                    return  (Object.prototype.toString.call(this) === '[object Function]');
+                 };
+            }
         }
 
-        isAFunction();
+        /**
+         * Checks whether an object is an array. Array prototype has an implementation but cannnot be used 
+         * against objects that are not type of array
+         */
+        var isArray = function() {
+            if(!Object.isArray) {
+                Object.prototype.isArray = function() {
+                    return (Object.prototype.toString.call(this) == '[object Array]');
+                }
+            }
+
+        }
+
+        isAFunction.apply(null);
+        isArray.apply(null);
     }
+}
+
+TimeT.prototype.Priotize = function(timeArg) {
+    
 }
 
 
