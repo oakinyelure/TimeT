@@ -93,6 +93,9 @@ TimeT.prototype.Validators = {
     }
 }
 
+/**
+ * Object holds helper methods
+ */
 TimeT.prototype.Helpers = {
 
     applyPolyfill: function() {
@@ -126,8 +129,50 @@ TimeT.prototype.Helpers = {
     }
 }
 
+/**
+ * @param {TimeT | Array<TimeT>} timeArg
+ * @returns {Object}
+ * 
+ * Method rearranges TimeT in descending order. We only want to compute 
+ * TimeT object. Every other objects are ommitted. 
+ * 
+ * NOTE: It is assumed that when only an argument is passed to this function,
+ * the user wants to priotize between the date of current instance and the date 
+ * of passed argument. passing an array of TimeT object will priotize the objects in 
+ * the arguments.
+ * 
+ * This is not a priority queue as we are not solving data structure problem in this context. Implementing
+ * priority queue may proove sufficient but the work effort underweigh the value 
+ */
 TimeT.prototype.Priotize = function(timeArg) {
-    
+    // making sure all polyfill are ready to go before they are being used
+    var priorityList = [];
+    var orderedList = [];
+    this.Helpers.applyPolyfill();
+
+    if(arguments.length > 1) {
+        throw new Error("Accepts 1 arg. "+arguments.length+ " passed");
+    }
+    if(!timeArg.isArray() && timeArg instanceof TimeT) {
+        priorityList.push(this,timeArg);
+    }
+    if(timeArg.isArray()) {
+        for(var timeIndex in timeArg) {
+            if(timeArg[timeIndex] instanceof TimeT) {
+                priorityList.push(timeArg[timeIndex]);
+            }
+        }
+    }
+
+    return {
+        getPrevious: function() {
+            return priorityList;
+        },
+
+        getOrdered: function() {
+            return orderedList;
+        }
+    }
 }
 
 
