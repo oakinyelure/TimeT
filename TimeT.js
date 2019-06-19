@@ -91,10 +91,6 @@ TimeT.prototype.Validators = {
 
 TimeT.prototype.Helpers = {
 
-    priotize: function(timeArg) {
-
-    },
-
     customPolyfill: function() {
 
         /**
