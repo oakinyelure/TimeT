@@ -30,7 +30,7 @@ function TimeT(date) {
         return newTInstance;
     }
     if(this.Validators.isValidDate(date)) {
-        let newTInstance = new TimeT();
+        var newTInstance = new TimeT();
         newTInstance.setDate(date);
         return newTInstance;
     }
