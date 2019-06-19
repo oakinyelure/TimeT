@@ -25,10 +25,14 @@ function TimeT(date) {
         if(!this.Validators.isSupportedDateFormat(date)) {
             throw TypeError("Not a supported date format. Use YYYY-mm-dd");
         }
-        return new TimeT().setDate(new Date(date));
+        var newTInstance = new TimeT();
+        newTInstance.setDate(new Date(date));
+        return newTInstance;
     }
     if(this.Validators.isValidDate(date)) {
-        return new TimeT().setDate(date);
+        let newTInstance = new TimeT();
+        newTInstance.setDate(date);
+        return newTInstance;
     }
     
 }
