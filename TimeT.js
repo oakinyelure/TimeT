@@ -124,8 +124,17 @@ TimeT.prototype.Helpers = {
 
         }
 
+        var isNumber = function() {
+            if(!Object.isNumber) {
+                Object.prototype.isNumber = function() {
+                    return (Object.prototype.toString.call(this) == '[object Number]');
+                }
+            }
+        }
+
         isAFunction.apply(null);
         isArray.apply(null);
+        isNumber.apply(null);
     }
 }
 
@@ -150,9 +159,19 @@ TimeT.prototype.Priotize = function(timeArg) {
     var orderedList = [];
     this.Helpers.applyPolyfill();
 
-    if(arguments.length > 1) {
-        throw new Error("Accepts 1 arg. "+arguments.length+ " passed");
-    }
+    /**
+     * private method to sort date in  
+     * @param {Array<TimeT>} arg 
+     */
+    var priotize = function(arg, toAscending) {
+        return arg.sort(function(prev,next) {
+            if(toAscending) {
+                return prev.date.getTime() - next.date.getTime();
+            }
+            return next.date.getTime() - prev.date.getTime();
+        });
+    };
+
     if(!timeArg.isArray() && timeArg instanceof TimeT) {
         priorityList.push(this,timeArg);
     }
@@ -163,14 +182,88 @@ TimeT.prototype.Priotize = function(timeArg) {
             }
         }
     }
+    /**
+     * We will assign by value not reference so that we have access 
+     * to previous array. The sort method will sort the argument too.
+     * concat method will avoid that
+     */
+    orderedList = priotize.call(null, priorityList.concat());
 
+    /**
+     * Public API
+     */
     return {
+
+        /**
+         * returns a cleaned version of original 
+         * list to priotize. Expected to return a list of TimeT
+         * object
+         * @returns {Array<TimeT} priorityList
+         */
         getPrevious: function() {
             return priorityList;
         },
 
+        /**
+         * retuns an ordered or priotized version of the list
+         * @returns {Array<TimeT>} orderedList
+         */
         getOrdered: function() {
             return orderedList;
+        },
+
+        /**
+         * returns object at the top of the ordered list
+         * @returns {TimeT}
+         */
+        front: function() {
+            if(!this.isEmpty()) {
+                return orderedList[0];
+            }
+            throw new ReferenceError("Error pointing to invalid reference");
+        },
+
+        /**
+         * returns object at the end of the ordered list
+         * @returns {TimeT}
+         */
+        rear: function() {
+            if(!this.isEmpty()) {
+                return orderedList[orderedList.length - 1];
+            }
+            throw new ReferenceError("Error pointing to invalid reference");
+        },
+
+        /**
+         * Checks whether the orderedList is empty
+         * @returns {boolean}
+         */
+        isEmpty: function() {
+            return !orderedList.length;
+        },
+
+        /**
+         * Changes the sort order of the ordered list. 
+         * @returns {TimeT}
+         */
+        toAscending: function() {
+            orderedList = priotize.call(null, priorityList, true);
+            return this;
+        },
+        
+
+        /**
+         * Gets an ordered Time
+         * @param {Number} index 
+         */
+        getAt: function(index) {
+            if(!index.isNumber()) {
+                throw new Error("Not A Number");
+            }
+            if(index < 0 || index > orderedList.length - 1) {
+                throw new ReferenceError("Error pointing to invalid reference");
+            }
+            return orderedList[index];
         }
     }
 }
