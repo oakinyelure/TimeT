@@ -30,3 +30,5 @@ describe("#Instantiating with unsupported date argument", () => {
 });
 
 const Validators = require("./validator-test");
+const Helpers = require("./helper-test");
+const Priotize = require("./priotize-test");
