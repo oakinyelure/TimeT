@@ -127,8 +127,16 @@ const TimeT = require("../TimeT.js");
                     inst.getAt(new String());
                     inst.getAt(new Date());
                 }).to.throw();
-
-            })
+            }),
+            it("should throw an exception when an invalid index is passed", function() {
+                expect(function() {
+                    inst.getAt(-9);
+                    inst.getAt(8);
+                }).to.throw();
+            }),          
+            it("should return TimeT at specified index", function() {
+                expect(inst.getAt(1)).to.equal(listToPriotize[4]);
+            })               
         })
     });
 })();
