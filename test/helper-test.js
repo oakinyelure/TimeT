@@ -8,16 +8,6 @@ const TimeT = require("../TimeT.js");
         describe("#IsAFunction prototype ", function() {
             let timeInstance = new TimeT();
 
-            it("should not exist without calling polyfill", function() {;
-                let test = function(){};
-                expect(function() {test.isAFunction()}).to.throw();
-            }),
-
-            it("should exist after calling polyfill", function() {  
-                timeInstance.Helpers.applyPolyfill();
-                expect(new Object.isAFunction() != null).to.be.true;
-            }),
-
             it("should return false when used on an object that is not a function", function() {
                 let testArray = [new TimeT(), new TimeT(), new TimeT()];
                 expect(testArray.isAFunction()).to.be.false;
@@ -57,6 +47,23 @@ const TimeT = require("../TimeT.js");
             it("should return true on new array objects", function() {
                 expect([].isArray()).to.be.true;
             })            
+        });
+
+        describe("#IsNumber prototype", function() {
+            let inst = new TimeT();
+
+            it("should return false if used on non integer objects", function() {
+                expect(inst.isNumber()).to.be.false;
+            }),
+            it("should return true if used on positive numbers", function() {
+                expect(inst.date.getDate().isNumber()).to.be.true;
+            }),
+            it("should return true if used on negative numbers", function() {
+                expect((-2345).isNumber()).to.be.true;
+            }),
+            it("should return true if used on infinity", function() {
+                expect(Infinity.isNumber()).to.be.true;
+            })
         })
        
     })
