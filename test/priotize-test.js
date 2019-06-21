@@ -39,6 +39,12 @@ const TimeT = require("../TimeT.js");
                 for(var i = 0; i < pResult.length; i++) {
                     expect(pResult[i]).to.be.an.instanceOf(TimeT);
                 }
+            }),
+
+            it("should accept an empty array as an empty priority instance", function() {
+                let inst = new TimeT().Priotize([]);
+                expect(inst.getOrdered().length).equal(0);
+                expect(inst.getPrevious().length).equal(0);
             })
         });
 
@@ -116,6 +122,34 @@ const TimeT = require("../TimeT.js");
             })
         });
 
+        describe("#toDescending()", function() {
+            let listToPriotize = [new TimeT("2017-01-04"),  new TimeT("2014-01-04"), new TimeT("2049-06-01"),  new TimeT("2018-01-04"), new TimeT("2019-01-04")];
+            it("should return the recent date",function() {
+                let inst = new TimeT().Priotize(listToPriotize);
+                inst.toDescending();
+                expect(inst.front()).to.equal(listToPriotize[2]);
+                expect(inst.toAscending().toDescending().front()).to.equal(listToPriotize[2]);
+            })
+        });
+
+        describe("#isDescending()", function() {
+            let listToPriotize = [new TimeT("2017-01-04"),  new TimeT("2014-01-04"), new TimeT("2049-06-01"),  new TimeT("2018-01-04"), new TimeT("2019-01-04")];
+            it("should return true by default",function() {
+                let inst = new TimeT().Priotize(listToPriotize);
+                expect(inst.isDescending()).to.be.true;
+            }),
+            it("should return false when toAscending method is called",function() {
+                let inst = new TimeT().Priotize(listToPriotize);
+                inst.toAscending();
+                expect(inst.isDescending()).to.be.false;
+            }),
+            it("should return true when toAscending method is called and then toDescending method is called",function() {
+                let inst = new TimeT().Priotize(listToPriotize);
+                inst.toAscending();
+                expect(inst.toDescending().isDescending()).to.be.true;
+            })             
+        });
+
         describe("#getAt()", function() {
             let listToPriotize = [new TimeT("2017-01-04"),  new TimeT("2014-01-04"), new TimeT("2049-06-01"),  new TimeT("2018-01-04"), new TimeT("2019-01-04")];
 
@@ -137,6 +171,47 @@ const TimeT = require("../TimeT.js");
             it("should return TimeT at specified index", function() {
                 expect(inst.getAt(1)).to.equal(listToPriotize[4]);
             })               
+        });
+
+        describe("#enQueue()", function() {
+            let inst = new TimeT().Priotize([]);
+
+            it("should throw an error when passed an instance of not TimeT", function() {
+                let test = function() {
+                    inst.enQueue(new Date());
+                };
+                expect(test).to.throw();
+                expect(function() {
+                    inst.enQueue();
+                }).to.throw();
+            }),
+
+            it("should increase length of ordered and previous list when passed to a empty priority instantiation", function() {
+                inst.enQueue(new TimeT("2013-01-06"));
+                expect(inst.getOrdered().length).to.equal(1);
+                expect(inst.getOrdered().length).to.equal(1);
+            }),
+
+
+            it("should add date in order when called in descending mode", function() {
+                let dateToAdd = new TimeT("2019-01-04");
+                inst.enQueue(dateToAdd);
+                expect(inst.front()).to.equal(dateToAdd);
+            }),
+
+            it("should add date in order when called in ascending mode", function() {
+                let dateToAdd = new TimeT("2049-01-04");
+                inst.enQueue(dateToAdd);
+                inst.toAscending();
+                expect(inst.rear()).to.equal(dateToAdd);
+            }),
+            
+            it("should return the index of the new position of the the time instance passed", function() {
+                let dToAdd = new TimeT(new Date("1992-01-08"));
+                let index = inst.enQueue(dToAdd);
+                expect(dToAdd).to.equal(inst.getAt(index));
+
+            })
         })
     });
 })();

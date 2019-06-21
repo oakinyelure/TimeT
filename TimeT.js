@@ -13,12 +13,33 @@
  */
 function TimeT(date) {
 
+    var GLOBAL_DATE = new Date();
+
+    /**
+     * returns the date used to instantiate TimeT
+     * @returns {Date} GLOBAL_DATE
+     */
+    this.getTimeInstance = function() {
+        return GLOBAL_DATE;
+    }
+
+    /**
+     * sets the global date object
+     * @return {void}
+     */
+    this.setDate = function(date) {
+        if(!this.Validators.isValidDate(date)) {
+            throw TypeError("Not a supported date");
+        }
+        GLOBAL_DATE = date;
+    }    
+
     /**
      * User may use different type of date instance. We want to check to know which 
      * version of TimeT to return
      */
     if(!date) {
-        this.date = new Date();
+        this.setDate(GLOBAL_DATE);
     }
     if(typeof date === "string") {
 
@@ -39,17 +60,6 @@ function TimeT(date) {
 
 TimeT.prototype = {
 
-    /**
-     * sets the date in the current scope
-     * @param {Date} date 
-     * @returns void
-     */
-    setDate: function(date) {
-        if(!this.Validators.isValidDate(date)) {
-            throw TypeError("Not a supported date");
-        }
-        this.date = date;
-    }
 }
 
 
@@ -106,7 +116,7 @@ TimeT.prototype.Helpers = {
         var isAFunction = function() {
             if(!Object.isAFunction) {
                 Object.prototype.isAFunction = function() {
-                    return  (Object.prototype.toString.call(this) === '[object Function]');
+                    return (Object.prototype.toString.call(this) === '[object Function]');
                  };
             }
         }
@@ -157,6 +167,10 @@ TimeT.prototype.Priotize = function(timeArg) {
     // making sure all polyfill are ready to go before they are being used
     var priorityList = [];
     var orderedList = [];
+    var inAscending = false;
+
+    var _self = this;
+
     this.Helpers.applyPolyfill();
 
     /**
@@ -166,22 +180,27 @@ TimeT.prototype.Priotize = function(timeArg) {
     var priotize = function(arg, toAscending) {
         return arg.sort(function(prev,next) {
             if(toAscending) {
-                return prev.date.getTime() - next.date.getTime();
+                return prev.getTimeInstance().getTime() - next.getTimeInstance().getTime();
             }
-            return next.date.getTime() - prev.date.getTime();
+            return next.getTimeInstance().getTime() - prev.getTimeInstance().getTime();
         });
     };
 
-    if(!timeArg.isArray() && timeArg instanceof TimeT) {
-        priorityList.push(this,timeArg);
-    }
-    if(timeArg.isArray()) {
-        for(var timeIndex in timeArg) {
-            if(timeArg[timeIndex] instanceof TimeT) {
-                priorityList.push(timeArg[timeIndex]);
+    var assigner = function(args) {
+        if(!args.isArray() && args instanceof TimeT) {
+            priorityList.push(_self,args);
+        }
+        if(args.isArray()) {
+            for(var timeIndex in args) {
+                if(args[timeIndex] instanceof TimeT) {
+                    priorityList.push(args[timeIndex]);
+                }
             }
         }
-    }
+    };
+
+    assigner.call(null,timeArg);
+
     /**
      * We will assign by value not reference so that we have access 
      * to previous array. The sort method will sort the argument too.
@@ -248,7 +267,26 @@ TimeT.prototype.Priotize = function(timeArg) {
          */
         toAscending: function() {
             orderedList = priotize.call(null, priorityList, true);
+            inAscending = true;
             return this;
+        },
+
+        /**
+         * Changes the sort order to descending. It is descending by default but order changes when 
+         * toAscending is called
+         */
+        toDescending: function() {
+            orderedList = priotize.call(null, priorityList);
+            inAscending = false;
+            return this;
+        },
+
+        /**
+         * Returns the sort state
+         * @returns {Boolean} inAscending
+         */
+        isDescending: function() {
+            return !inAscending;
         },
         
 
@@ -264,7 +302,62 @@ TimeT.prototype.Priotize = function(timeArg) {
                 throw new ReferenceError("Error pointing to invalid reference");
             }
             return orderedList[index];
+        },
+        
+        /**
+         * Method adds another TimeT instance to the queue and returns the index it is inserted 
+         * to. We have to put all these logic to be able to get the index. A sort would have done the job but will not
+         * return the index
+         * @param {TimeT} queue 
+         * @returns {Number} indexOfNewQueue
+         */
+        enQueue: function(queue) {
+            var indexOfNewQueue = -1;
+
+            // check if arg is an instance of TimeT. 
+            if(!(queue instanceof TimeT)) {
+                throw new TypeError("Expected " + Object.prototype.toString.call(queue) + " to be instance of TimeT");
+            }
+            priorityList.push(queue);
+
+            /**
+             * Since the queue can be in both ascending and descending order,
+             * we have to know what order to insert the new Time. This is needed as we need to return 
+             */
+            var inserted = false;
+            if(inAscending) {
+                for(var i = 0; i < orderedList.length; i++) {
+                    if(queue.getTimeInstance().getDate() > orderedList[i].getTimeInstance().getDate()) {
+                        orderedList.splice(i,0,queue);
+                        indexOfNewQueue = i;
+                        inserted = true;
+                        break;
+                    }
+                }
+                if(!inserted) {
+                    orderedList.push(queue);
+                    indexOfNewQueue = orderedList.length;
+                }
+
+            }
+            else {
+                for(var i = 0; i < orderedList.length; i++) {
+                    if(queue.getTimeInstance().getDate() < orderedList[i].getTimeInstance().getDate()) {
+                        orderedList.splice(i,0,queue);
+                        indexOfNewQueue = i;
+                        inserted = true;
+                        break;
+                    }
+                }
+                if(!inserted) {
+                    orderedList.push(queue);
+                    indexOfNewQueue = orderedList.length;
+                }
+            }
+        
+            return indexOfNewQueue;
         }
+ 
     }
 }
 
