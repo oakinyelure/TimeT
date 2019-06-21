@@ -56,7 +56,7 @@ const TimeT = require("../TimeT.js");
                 expect(inst.isNumber()).to.be.false;
             }),
             it("should return true if used on positive numbers", function() {
-                expect(inst.date.getDate().isNumber()).to.be.true;
+                expect((598).isNumber()).to.be.true;
             }),
             it("should return true if used on negative numbers", function() {
                 expect((-2345).isNumber()).to.be.true;
