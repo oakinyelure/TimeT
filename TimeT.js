@@ -96,6 +96,15 @@ TimeT.prototype.Validators = {
      */
     isValidDate: function(date) {
         return (Object.prototype.toString.call(date) === '[object Date]');
+    },
+
+    /**
+     * Method returns supported operation params. This is used within the math object to validate 
+     * what type of operation a user wants to perform
+     * @returns {Array<string>}
+     */
+    getSupportedOperationParams: function() {
+        return ["year", "years", "minute", "minutes", "hours", "hour", "day", "days", "second", "seconds"];
     }
 }
 
@@ -354,6 +363,30 @@ TimeT.prototype.Priotize = function(timeArg) {
             return indexOfNewQueue;
         }
  
+    }
+}
+
+
+/**
+ * Object contains TimeT mathematical operations
+ */
+TimeT.prototype.Math = {
+    
+    /**
+     * Method adds the parsed argument to the Date context.
+     * Year, day, hours, month, minutes or TimeT
+     * @param {string} arg 
+     */
+    add: function(arg) {
+
+    },
+
+    /**
+     * Method subtracts parsed arm from current date context
+     * @param {*} arg 
+     */
+    subtract: function(arg) {
+
     }
 }
 
