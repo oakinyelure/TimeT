@@ -46,5 +46,12 @@ const TimeT = require("../TimeT.js");
                 expect(time.Validators.isValidDate({})).to.be.false;
             })
         });
+
+        describe("#getSupportedOperationParams()",function() {
+            it("Should return an array", function() {
+                let tInstance = new TimeT();
+                expect(tInstance.Validators.getSupportedOperationParams()).to.be.an.instanceof(Array);
+            })
+        })
     });
 })();
