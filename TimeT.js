@@ -84,10 +84,17 @@ TimeT.prototype = {
                     var newDay = currentDate.getUTCDate() + operand;
                     currentDate.setUTCDate(newDay);
                 break;
-
+                case 'months': case 'month':
+                    var newMonth = currentDate.getUTCMonth() + operand;
+                    currentDate.setUTCMonth(newMonth);
+                break;
                 default :
                     throw new Error("Not supported date part");
             }
+        }
+
+        if(arg instanceof TimeT) {
+            
         }
     }
 }

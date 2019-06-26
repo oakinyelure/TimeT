@@ -112,7 +112,15 @@ const TimeT = require("../TimeT.js");
                 expect(instance.getTimeInstance().getUTCMonth()).to.equal(1);
                 expect(instance.getTimeInstance().getUTCDate()).to.equal(28);
             })
-        })
+        });
+
+        describe("#months",function() {
+            it("should add the number of months in the parametr to the date object", function() {
+                let tInstance = new TimeT(new Date("2017-05-04"));
+                tInstance.add("4 months");
+                expect(tInstance.getTimeInstance().getUTCMonth()).equal(8);
+            })
+        });
 
     })
 
