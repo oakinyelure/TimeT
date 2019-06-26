@@ -75,12 +75,12 @@ TimeT.prototype = {
                 throw TypeError("Operand must be a number");
             }
             var currentDate = this.getTimeInstance();
-            switch(operation) {
+            switch(operation.toLowerCase()) {
                 case 'year': case 'years':
                     var newYear = currentDate.getUTCFullYear() + operand;
                     currentDate.setUTCFullYear(newYear);
                 break;
-                case 'day':
+                case 'day': case 'days':
                     var newDay = currentDate.getUTCDate() + operand;
                     currentDate.setUTCDate(newDay);
                 break;
@@ -89,10 +89,6 @@ TimeT.prototype = {
                     throw new Error("Not supported date part");
             }
         }
-    },
-
-    substract: function(arg) {
-
     }
 }
 
