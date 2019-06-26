@@ -72,13 +72,17 @@ TimeT.prototype = {
             var operand = Number(argValues[0]);
             var operation = argValues[1];
             if(isNaN(operand)) {
-                throw TypeError("Operand must be a number")
+                throw TypeError("Operand must be a number");
             }
+            var currentDate = this.getTimeInstance();
             switch(operation) {
                 case 'year': case 'years':
-                    var currentDate = this.getTimeInstance();
                     var newYear = currentDate.getUTCFullYear() + operand;
                     currentDate.setUTCFullYear(newYear);
+                break;
+                case 'day':
+                    var newDay = currentDate.getUTCDate() + operand;
+                    currentDate.setUTCDate(newDay);
                 break;
 
                 default :
