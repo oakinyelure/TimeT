@@ -55,7 +55,41 @@ function TimeT(date) {
 }
 
 TimeT.prototype = {
+    /**
+     * Method adds the parsed argument to the Date context.
+     * Year, day, hours, month, minutes or TimeT
+     * @param {string} arg 
+     */
+    add: function(arg) {
+        if(typeof arg !== 'string' && !(arg instanceof TimeT)) {
+            throw new TypeError("Only supports strings and TimeT instances.");
+        }
+        if(typeof arg === 'string') {
+            var argValues = arg.split(" ");
+            if(argValues.length < 2) {
+                throw ReferenceError("Invalid format. Format should be (number dateParam.) ... 1 year");
+            }
+            var operand = Number(argValues[0]);
+            var operation = argValues[1];
+            if(isNaN(operand)) {
+                throw TypeError("Operand must be a number")
+            }
+            switch(operation) {
+                case 'year': case 'years':
+                    var currentDate = this.getTimeInstance();
+                    var newYear = currentDate.getUTCFullYear() + operand;
+                    currentDate.setUTCFullYear(newYear);
+                break;
 
+                default :
+                    throw new Error("Not supported date part");
+            }
+        }
+    },
+
+    substract: function(arg) {
+
+    }
 }
 
 
@@ -332,7 +366,7 @@ TimeT.prototype.Priotize = function(timeArg) {
             var inserted = false;
             if(inAscending) {
                 for(var i = 0; i < orderedList.length; i++) {
-                    if(queue.getTimeInstance().getDate() > orderedList[i].getTimeInstance().getDate()) {
+                    if(queue.getTimeInstance().getTime() < orderedList[i].getTimeInstance().getTime()) {
                         orderedList.splice(i,0,queue);
                         indexOfNewQueue = i;
                         inserted = true;
@@ -347,7 +381,7 @@ TimeT.prototype.Priotize = function(timeArg) {
             }
             else {
                 for(var i = 0; i < orderedList.length; i++) {
-                    if(queue.getTimeInstance().getDate() < orderedList[i].getTimeInstance().getDate()) {
+                    if(queue.getTimeInstance().getTime() > orderedList[i].getTimeInstance().getTime()) {
                         orderedList.splice(i,0,queue);
                         indexOfNewQueue = i;
                         inserted = true;
@@ -366,29 +400,6 @@ TimeT.prototype.Priotize = function(timeArg) {
     }
 }
 
-
-/**
- * Object contains TimeT mathematical operations
- */
-TimeT.prototype.Math = {
-    
-    /**
-     * Method adds the parsed argument to the Date context.
-     * Year, day, hours, month, minutes or TimeT
-     * @param {string} arg 
-     */
-    add: function(arg) {
-
-    },
-
-    /**
-     * Method subtracts parsed arm from current date context
-     * @param {*} arg 
-     */
-    subtract: function(arg) {
-
-    }
-}
 
 
 module.exports = TimeT;
