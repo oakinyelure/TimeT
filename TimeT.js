@@ -46,20 +46,73 @@ function TimeT(date) {
         if(!this.Validators.isSupportedDateFormat(date)) {
             throw TypeError("Not a supported date format. Use YYYY-mm-dd");
         }
-        var newTInstance = new TimeT();
-        newTInstance.setDate(new Date(date));
-        return newTInstance;
+        this.setDate(new Date(date));
     }
     if(this.Validators.isValidDate(date)) {
-        var newTInstance = new TimeT();
-        newTInstance.setDate(date);
-        return newTInstance;
+        this.setDate(date);
     }
     
 }
 
 TimeT.prototype = {
+    /**
+     * Method adds the parsed argument to the Date context.
+     * Year, day, hours, month, minutes or TimeT
+     * @param {string} arg 
+     */
+    add: function(arg) {
+        if(typeof arg !== 'string' && !(arg instanceof TimeT)) {
+            throw new TypeError("Only supports strings and TimeT instances.");
+        }
+        if(typeof arg === 'string') {
+            var argValues = arg.split(" ");
+            if(argValues.length < 2) {
+                throw ReferenceError("Invalid format. Format should be (number dateParam.) ... 1 year");
+            }
+            var operand = Number(argValues[0]);
+            var operation = argValues[1];
+            if(isNaN(operand)) {
+                throw TypeError("Operand must be a number");
+            }
+            var currentDate = this.getTimeInstance();
+            switch(operation.toLowerCase()) {
+                case 'year': case 'years':
+                    var newYear = currentDate.getUTCFullYear() + operand;
+                    currentDate.setUTCFullYear(newYear);
+                break;
+                case 'day': case 'days':
+                    var newDay = currentDate.getUTCDate() + operand;
+                    currentDate.setUTCDate(newDay);
+                break;
+                case 'months': case 'month':
+                    var newMonth = currentDate.getUTCMonth() + operand;
+                    currentDate.setUTCMonth(newMonth);
+                break;
+                case 'hour': case 'hours':
+                    var newHours = currentDate.getUTCHours() + operand;
+                    currentDate.setUTCHours(newHours);
+                break;
+                case 'minute': case 'minutes':
+                    var newMinutes = currentDate.getUTCMinutes() + operand;
+                    currentDate.setUTCMinutes(newMinutes);
+                break;
+                case 'second': case 'seconds': 
+                    var newSeconds = currentDate.getUTCSeconds() + operand;
+                    currentDate.setUTCSeconds(newSeconds);
+                break;
+                case 'milliseconds': case 'millisecond':
+                    var newMil = currentDate.getUTCMilliseconds() + operand;
+                    currentDate.setUTCMilliseconds(newMil);
+                break;
+                default :
+                    throw new Error("Not supported date part");
+            }
+        }
 
+        if(arg instanceof TimeT) {
+
+        }
+    }
 }
 
 
@@ -100,6 +153,15 @@ TimeT.prototype.Validators = {
      */
     isValidDate: function(date) {
         return (Object.prototype.toString.call(date) === '[object Date]');
+    },
+
+    /**
+     * Method returns supported operation params. This is used within the math object to validate 
+     * what type of operation a user wants to perform
+     * @returns {Array<string>}
+     */
+    getSupportedOperationParams: function() {
+        return ["year", "years", "minute", "minutes", "hours", "hour", "day", "days", "second", "seconds"];
     }
 }
 
@@ -327,7 +389,7 @@ TimeT.prototype.Priotize = function(timeArg) {
             var inserted = false;
             if(inAscending) {
                 for(var i = 0; i < orderedList.length; i++) {
-                    if(queue.getTimeInstance().getDate() > orderedList[i].getTimeInstance().getDate()) {
+                    if(queue.getTimeInstance().getTime() < orderedList[i].getTimeInstance().getTime()) {
                         orderedList.splice(i,0,queue);
                         indexOfNewQueue = i;
                         inserted = true;
@@ -336,13 +398,13 @@ TimeT.prototype.Priotize = function(timeArg) {
                 }
                 if(!inserted) {
                     orderedList.push(queue);
-                    indexOfNewQueue = orderedList.length;
+                    indexOfNewQueue = orderedList.length - 1;
                 }
 
             }
             else {
                 for(var i = 0; i < orderedList.length; i++) {
-                    if(queue.getTimeInstance().getDate() < orderedList[i].getTimeInstance().getDate()) {
+                    if(queue.getTimeInstance().getTime() > orderedList[i].getTimeInstance().getTime()) {
                         orderedList.splice(i,0,queue);
                         indexOfNewQueue = i;
                         inserted = true;
@@ -351,7 +413,7 @@ TimeT.prototype.Priotize = function(timeArg) {
                 }
                 if(!inserted) {
                     orderedList.push(queue);
-                    indexOfNewQueue = orderedList.length;
+                    indexOfNewQueue = orderedList.length - 1;
                 }
             }
         
@@ -360,6 +422,7 @@ TimeT.prototype.Priotize = function(timeArg) {
  
     }
 }
+
 
 
 module.exports = TimeT;

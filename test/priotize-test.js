@@ -203,7 +203,7 @@ const TimeT = require("../TimeT.js");
                 let dateToAdd = new TimeT("2049-01-04");
                 inst.enQueue(dateToAdd);
                 inst.toAscending();
-                expect(inst.rear()).to.equal(dateToAdd);
+                expect(inst.rear()).to.equal(dateToAdd);              
             }),
             
             it("should return the index of the new position of the the time instance passed", function() {
