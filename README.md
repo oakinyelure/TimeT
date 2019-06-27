@@ -39,7 +39,7 @@ Create TimeT wrapper interface
     - ``` import * as TimeT from "path to TimeT" ```
 
 ## Usage
-** Creating TimeT instance **
+**Creating TimeT instance**
 ```javascript 
     // Create with Date Object
     let timeInstance = new TimeT(new Date());
@@ -80,25 +80,59 @@ Subtracting from date object
 ```
 
 
-** Using the Priotize API **
-The Priotize method works like a priority queue. It helps sort TimeT object based on a priority. We only pass TimeT instances. The priority is gotten from the Eposh milliseconds. The amazing thing about this is that the priority queue works in both ascending and descending order. Developers do have freedom to choose what priority to use
+**Using the Priotize API**
+The Priotize method works like a priority queue. It helps sort TimeT object based on a priority. We only pass TimeT instances. The priority is gotten from the Eposh milliseconds. The amazing thing about this is that the priority queue works in both ascending and descending order. Developers do have freedom to choose what priority to use. By the fault, the queue is in descending order. 
 
 -  Angular interface
-    - ```typescript
+    ```typescript
         export interface IPriotize {
             getPrevious(): Array<TimeT> // returns an unordered copy of the argument you passed to the object
             getOrdered(): Array<TimeT> // returns priotized list
             front(): TimeT // returns element at the top whether descending or ascending
             rear(): TimeT // returns element at the bottom of the queue
             isEmpty(): boolean // Checks whether the priority list is empty
-            toAscending(): Priotize // Reverses queue to ascending
-            toDescending(): Priotize // Reverses queue to descending
+            toAscending(): IPriotize // Reverses queue to ascending
+            toDescending(): IPriotize // Reverses queue to descending
             isDescending(): boolean // checks if list is in descending order
             getAt(index: number): TimeT //returns index at specified index
             enQueue(item: TimeT): number // adds item to the list considering the order you have set. Returns the index which that element was placed
         }
     ```
 
-    - Use Cases
+- Use Cases
+    - Create tasks ordered by the create date
+    - **IMPLEMENTATION**
+        - ```javascript
+            let timeInstance = new TimeT();
+            let priorityQ = timeInstance.Priotize([]);
+            let tasks = [
+                {title: 'Graduate', isCompleted: false, implementationDate: new Date("2020-01-10")},
+                {title: 'Start Work', isCompleted: false, implementationDate: new Date("2020-03-05")},
+                {title: 'Enroll in Udacity', isCompleted: false, implementationDate: new Date("2019-01-04")},                
+            ];
+
+            for(var i = 0; i < tasks.length; i++) {
+                let currentTask = tasks[i];
+                let tInstance = new TimeT(currentTask.implementationDate);
+                tInstance["data"] = currentTask; // Assign to self to have access to the task
+                let indexOfTask = priorityQ.enQueue(tInstance);
+                console.log(indexOfTask);
+            }
+            // Expected output
+            // 1 0 3
+
+            // By default it is going to add in descending order. Recent date first. In this case it is the task[2] being at the top 
+            if(priorityQ.isDescending()) {
+                priorityQ.toAscending(); // reverse the order. //Oldest date first 
+            }
+
+            let orderedQueue = priorityQ.getOrdered();
+            for(var i = 0; i < orderedQueue.length; i++) {
+                console.log(orderedQueue[i]['data'].title);
+            }
+            // Expected output
+            // Enroll in Udacity | Graduate | Start work
+
+        ```
 
 
