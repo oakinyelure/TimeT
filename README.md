@@ -80,7 +80,7 @@ Subtracting from date object
 ```
 
 
-**Using the Priotize API**
+## Using the Priotize API
 The Priotize method works like a priority queue. It helps sort TimeT object based on a priority. We only pass TimeT instances. The priority is gotten from the Eposh milliseconds. The amazing thing about this is that the priority queue works in both ascending and descending order. Developers do have freedom to choose what priority to use. By the fault, the queue is in descending order. 
 
 -  Angular interface
@@ -99,27 +99,55 @@ The Priotize method works like a priority queue. It helps sort TimeT object base
         }
     ```
 
+- Creating Instances of the Data Structure
+    - Creating with TimeT Instance priotize on the time instance of the parant class. In this context, it is the time iject
+    ```javascript
+        let tInstance = new TimeT("2019-01-10").Priotize(new TimeT("2017-08-02")); 
+        let orderedList = tInstance.getOrdered();
+        // Expect two element. The Date of the TimeT object and the Date passed to the data structure
+    ```
+    - Creating with ArrayList of TimeT priotizes the array and ignores the Date of the Time instance
+    ```javascript
+        let tInstance = new TimeT("2019-01-10").Priotize([new TimeT(), new TimeT("2017-08-02"), new TimeT("2014-02-10")]);
+    ```
+    -   Creating with empty array creates a clean data structure with no elements
+    ```javascript
+        let instance = new TimeT("2019-01-04").Priotize([]);
+        console.log(instance.getOrdered().length);
+        // Expect 0
+    ```
+
 - Use Cases
-    - Create tasks ordered by the create date
+    - Create tasks ordered by the implementation date
     - **IMPLEMENTATION**
         - ```javascript
             let timeInstance = new TimeT();
+
+            /**
+             * Instantiate empty instance of the Priotity queue.
+             */
             let priorityQ = timeInstance.Priotize([]);
+
+            // Create the task list
             let tasks = [
                 {title: 'Graduate', isCompleted: false, implementationDate: new Date("2020-01-10")},
                 {title: 'Start Work', isCompleted: false, implementationDate: new Date("2020-03-05")},
                 {title: 'Enroll in Udacity', isCompleted: false, implementationDate: new Date("2019-01-04")},                
             ];
-
+            
             for(var i = 0; i < tasks.length; i++) {
                 let currentTask = tasks[i];
+
+                // Create new time instance 
                 let tInstance = new TimeT(currentTask.implementationDate);
                 tInstance["data"] = currentTask; // Assign to self to have access to the task
+
+                // Enqueue 
                 let indexOfTask = priorityQ.enQueue(tInstance);
                 console.log(indexOfTask);
             }
             // Expected output
-            // 1 0 3
+            // 0 0 2
 
             // By default it is going to add in descending order. Recent date first. In this case it is the task[2] being at the top 
             if(priorityQ.isDescending()) {
