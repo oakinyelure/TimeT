@@ -88,6 +88,22 @@ TimeT.prototype = {
                     var newMonth = currentDate.getUTCMonth() + operand;
                     currentDate.setUTCMonth(newMonth);
                 break;
+                case 'hour': case 'hours':
+                    var newHours = currentDate.getUTCHours() + operand;
+                    currentDate.setUTCHours(newHours);
+                break;
+                case 'minute': case 'minutes':
+                    var newMinutes = currentDate.getUTCMinutes() + operand;
+                    currentDate.setUTCMinutes(newMinutes);
+                break;
+                case 'second': case 'seconds': 
+                    var newSeconds = currentDate.getUTCSeconds() + operand;
+                    currentDate.setUTCSeconds(newSeconds);
+                break;
+                case 'milliseconds': case 'millisecond':
+                    var newMil = currentDate.getUTCMilliseconds() + operand;
+                    currentDate.setUTCMilliseconds(newMil);
+                break;
                 default :
                     throw new Error("Not supported date part");
             }
