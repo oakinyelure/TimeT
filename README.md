@@ -22,24 +22,24 @@ Clone TimeT from the master branch
 ### Including project into your Angular 2 project
 Create TimeT wrapper interface
 ```typescript 
-    export interface TimeT {
+    export interface ITimeT {
         setDate(date: Date): void;
         getTimeInstance(): Date;
         add(argument: string | TimeT);
         Validators: ValidatorInterface; // Create this interface
         Helpers: HelpersInterface; // create this interface
-        Priotize(): PriotizeInterface; // create this interface
+        Priotize(): IPriotize; // Check section on using Priotize for API
     }
  ```
 
 - Create typings.d.ts in the src folder
-- Create declaration file
-    - ``` declare var TimeT: interface | any ```
+- Add TimeT package
+    - ``` declare var TimeT: ITimeT | any ```
 - Include project in your component or directives
     - ``` import * as TimeT from "path to TimeT" ```
 
 ## Usage
-Creating TimeT instance
+** Creating TimeT instance **
 ```javascript 
     // Create with Date Object
     let timeInstance = new TimeT(new Date());
@@ -78,4 +78,27 @@ Subtracting from date object
 ```javascript 
     timeInstance.add("-5 days");
 ```
+
+
+** Using the Priotize API **
+The Priotize method works like a priority queue. It helps sort TimeT object based on a priority. We only pass TimeT instances. The priority is gotten from the Eposh milliseconds. The amazing thing about this is that the priority queue works in both ascending and descending order. Developers do have freedom to choose what priority to use
+
+-  Angular interface
+    - ```typescript
+        export interface IPriotize {
+            getPrevious(): Array<TimeT> // returns an unordered copy of the argument you passed to the object
+            getOrdered(): Array<TimeT> // returns priotized list
+            front(): TimeT // returns element at the top whether descending or ascending
+            rear(): TimeT // returns element at the bottom of the queue
+            isEmpty(): boolean // Checks whether the priority list is empty
+            toAscending(): Priotize // Reverses queue to ascending
+            toDescending(): Priotize // Reverses queue to descending
+            isDescending(): boolean // checks if list is in descending order
+            getAt(index: number): TimeT //returns index at specified index
+            enQueue(item: TimeT): number // adds item to the list considering the order you have set. Returns the index which that element was placed
+        }
+    ```
+
+    - Use Cases
+
 
