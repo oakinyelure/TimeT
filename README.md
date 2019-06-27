@@ -27,7 +27,7 @@ Create TimeT wrapper interface
         getTimeInstance(): Date;
         add(argument: string | TimeT);
         Validators: ValidatorInterface; // Create this interface
-        Helpers: HelpersInterface; // create this interface
+        Helpers: IHelper; // create this interface
         Priotize(): IPriotize; // Check section on using Priotize for API
     }
  ```
@@ -162,5 +162,55 @@ The Priotize method works like a priority queue. It helps sort TimeT object base
             // Enroll in Udacity | Graduate | Start work
 
         ```
+
+## Using the Helpers
+TimeT library provides some helpful API to manipulate javascript objects. A lot of this API's are already available in the Javascript API.
+
+- Angular Interface
+```typescript
+    export interface IHelper {
+        applyPolyfill(): void;
+    }
+```
+
+- Implementation
+    invoking ``` TimeT().Helpers.applyPolyfill() ``` releases 
+    ``` IsAFunction() ```
+    ``` isArray() ```
+    ``` isNumber() ```
+    to the global scope. We do not recommend this as there are many ways to acheive the same objective
+
+    - isAFunction()
+    Method checks if a certain object is a function. Traditionally, we will do
+    ```javascript
+        let fn = ()=>{};
+        if(typeof fn == 'Function')
+    ```
+    this method allows us check on the function itself by doing
+    ```javascript
+        var fn = () => {};
+        if(fn.isAFunction())
+    ```
+    Internally, we are checking the value of Object.prototype
+
+    - isArray()
+    Method checks if an object is an array. The javascript API has isArray method which accepts an argument of the object you are checking. This is the same but you won't need to pass any object. Traditionally, you will do
+    ```javascript
+       if(Array.isArray([new TimeT()]))
+    ```
+    This works but this API enables you to do
+    ```javascript
+        var fn = () => {};
+        if(fn.isArray())
+    ```
+
+    - isNumber()
+    Method checks if an object is a number. Traditionally, ```isNaN()``` is used to check if an object is a number. Thus, ```isNaN(new String("241")) ``` will return false because traditionally, the string is a number. of course, we can do ```typeoof Number("245") === "number" ```. The method removes the complexity and enables you to use isNumber to strictly check if an object is a true number. it will allow us to do
+    ```javascript
+    let number1 = 545;
+    number1.isNumber(); // returns true
+    new String("654").isNumber(); // returns false
+    Number(new String("654")).isNumber(); // returns true
+    ```
 
 
