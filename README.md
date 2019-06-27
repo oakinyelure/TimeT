@@ -2,7 +2,7 @@
 TimeT is a Date object wrapper that enables easy manipulation of the javascript object
 
 ## Background
-Date operations can be complex. Yes, we have libraries like moment.js. The library is powerful and can do a lot of things but not all things. This library provides some of the functionalities provided by moment.js with an easy to use API. To keep date format standard, we use UTC date format. We can get result by passing in other formats as necessary
+Date operations can be complex. Yes, we have libraries like moment.js. The library is powerful and can do a lot of things but not all things. This library provides some of the functionalities provided by moment.js with an easy to use API and also some vital functionalities that might be missing from the Moment library. To keep date format standard, we use UTC date format. We can get result by passing in other formats as necessary
 
 
 ## Installation
@@ -26,17 +26,17 @@ Create TimeT wrapper interface
         setDate(date: Date): void;
         getTimeInstance(): Date;
         add(argument: string | TimeT);
-        Validators: ValidatorInterface;
-        Helpers: HelpersInterface;
-        Priotize(): PriotizeInterface;
+        Validators: ValidatorInterface; // Create this interface
+        Helpers: HelpersInterface; // create this interface
+        Priotize(): PriotizeInterface; // create this interface
     }
  ```
 
-Create typings.d.ts in the src folder
-Create declaration file
-``` declare var TimeT: interface | any ```
-Include project in your component or directives
-``` import * as TimeT from "path to TimeT" ```
+- Create typings.d.ts in the src folder
+- Create declaration file
+    - ``` declare var TimeT: interface | any ```
+- Include project in your component or directives
+    - ``` import * as TimeT from "path to TimeT" ```
 
 ## Usage
 Creating TimeT instance
