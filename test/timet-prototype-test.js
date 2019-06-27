@@ -119,7 +119,30 @@ const TimeT = require("../TimeT.js");
                 let tInstance = new TimeT(new Date("2017-05-04"));
                 tInstance.add("4 months");
                 expect(tInstance.getTimeInstance().getUTCMonth()).equal(8);
+            }),
+            it("should subtract the number of days passed to the parameter if argument is negative", function() {
+                let instance = new TimeT("2019-06-27");
+                instance.add("-12 months");
+                expect(instance.getTimeInstance().getUTCFullYear()).equal(2018);
             })
+        });
+
+        describe("#hours",function() {
+            it("should add the number of hours in the parametr to the date object", function() {
+                let tInstance = new TimeT(new Date("March 13, 08 04:20"));
+                tInstance.add("4 hours");
+                expect(tInstance.getTimeInstance().getUTCHours()).equal(12);
+            }),
+            it("should subtract the number of hours passed to the parameter if argument is negative", function() {
+                let tInstance = new TimeT(new Date("March 13, 08 04:20"));
+                tInstance.add("-8 hours");
+                expect(tInstance.getTimeInstance().getUTCHours()).equal(0);
+            }),
+            it("Day should be next day if hours exceed days capacity", function() {
+                let tInstance = new TimeT(new Date("March 13, 08 04:20"));
+                tInstance.add("20 hours");
+                expect(tInstance.getTimeInstance().getUTCDate()).equal(14);
+            })            
         });
 
     })
