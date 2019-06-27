@@ -26,9 +26,8 @@ Create TimeT wrapper interface
         setDate(date: Date): void;
         getTimeInstance(): Date;
         add(argument: string | TimeT);
-        Validators: ValidatorInterface; // Create this interface
         Helpers: IHelper; // create this interface
-        Priotize(): IPriotize; // Check section on using Priotize for API
+        Priotize(arg: Array<TimeT> | TimeT): IPriotize; // Check section on using Priotize for API
     }
  ```
 
@@ -117,6 +116,8 @@ The Priotize method works like a priority queue. It helps sort TimeT object base
         // Expect 0
     ```
 
+    Note, TimeT will omit your argument if you pass unsupported type
+
 - Use Cases
     - Create tasks ordered by the implementation date
     - **IMPLEMENTATION**
@@ -182,7 +183,7 @@ TimeT library provides some helpful API to manipulate javascript objects. A lot 
     ``` isArray() ```
 
     ``` isNumber() ```
-    
+
     to the global scope. We do not recommend this as there are many ways to acheive the same objective
 
     - isAFunction()
