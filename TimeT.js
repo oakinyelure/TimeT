@@ -94,7 +94,7 @@ TimeT.prototype = {
         }
 
         if(arg instanceof TimeT) {
-            
+
         }
     }
 }
@@ -382,7 +382,7 @@ TimeT.prototype.Priotize = function(timeArg) {
                 }
                 if(!inserted) {
                     orderedList.push(queue);
-                    indexOfNewQueue = orderedList.length;
+                    indexOfNewQueue = orderedList.length - 1;
                 }
 
             }
@@ -397,7 +397,7 @@ TimeT.prototype.Priotize = function(timeArg) {
                 }
                 if(!inserted) {
                     orderedList.push(queue);
-                    indexOfNewQueue = orderedList.length;
+                    indexOfNewQueue = orderedList.length - 1;
                 }
             }
         
