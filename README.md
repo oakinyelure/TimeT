@@ -174,6 +174,7 @@ TimeT library provides some helpful API to manipulate javascript objects. A lot 
 ```
 
 - Implementation
+
     invoking ``` TimeT().Helpers.applyPolyfill() ``` releases 
     ``` IsAFunction() ```
     ``` isArray() ```
