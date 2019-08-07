@@ -17,10 +17,12 @@ function TimeT(date) {
 
     /**
      * returns the date used to instantiate TimeT
+     * To make sure instance of the date cannot be directly 
+     * manipulated, we return a different object.
      * @returns {Date} GLOBAL_DATE
      */
     this.getTimeInstance = function() {
-        return GLOBAL_DATE;
+        return new Date(GLOBAL_DATE.toString());
     }
 
     /**
@@ -79,30 +81,37 @@ TimeT.prototype = {
                 case 'year': case 'years':
                     var newYear = currentDate.getUTCFullYear() + operand;
                     currentDate.setUTCFullYear(newYear);
+                    this.setDate(currentDate);
                 break;
                 case 'day': case 'days':
                     var newDay = currentDate.getUTCDate() + operand;
                     currentDate.setUTCDate(newDay);
+                    this.setDate(currentDate);
                 break;
                 case 'months': case 'month':
                     var newMonth = currentDate.getUTCMonth() + operand;
                     currentDate.setUTCMonth(newMonth);
+                    this.setDate(currentDate);
                 break;
                 case 'hour': case 'hours':
                     var newHours = currentDate.getUTCHours() + operand;
                     currentDate.setUTCHours(newHours);
+                    this.setDate(currentDate);
                 break;
                 case 'minute': case 'minutes':
                     var newMinutes = currentDate.getUTCMinutes() + operand;
                     currentDate.setUTCMinutes(newMinutes);
+                    this.setDate(currentDate);
                 break;
                 case 'second': case 'seconds': 
                     var newSeconds = currentDate.getUTCSeconds() + operand;
                     currentDate.setUTCSeconds(newSeconds);
+                    this.setDate(currentDate);
                 break;
                 case 'milliseconds': case 'millisecond':
                     var newMil = currentDate.getUTCMilliseconds() + operand;
                     currentDate.setUTCMilliseconds(newMil);
+                    this.setDate(currentDate);
                 break;
                 default :
                     throw new Error("Not supported date part");

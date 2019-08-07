@@ -7,6 +7,8 @@ const TimeT = require("../TimeT.js");
     const TIME_INSTANCE = new TimeT("2017-01-01");
 
     describe("#Class Instantiation", () => {
+
+        
         it('empty instantiation should create instance of TimeT', function() {
             expect(new TimeT()).to.be.an.instanceof(TimeT);
         }),
@@ -41,13 +43,13 @@ const TimeT = require("../TimeT.js");
         }),
     
         it("private date property should equal date set from instance", function() {
-            expect(newTime.getTimeInstance()).to.equal(instanceDate);
+            expect(newTime.getTimeInstance().toString()).to.equal(instanceDate.toString());
         }),
     
         it("date instance should equal instance set by setDate property", function() {
             let newDate = new Date("2018-01-05");
             newTime.setDate(newDate);
-            expect(newTime.getTimeInstance()).to.equal(newDate);
+            expect(newTime.getTimeInstance().toString()).to.equal(newDate.toString());
         })
     });
 
